@@ -42,6 +42,7 @@ export default function TableCellComponent({ unit, header }: Props) {
       return 'Não encontrado';
     },
     refetchInterval: 60000, // Refetch a cada 60 segundos
+    refetchOnWindowFocus: true, // Refetch quando a janela ou aba ganha foco novamente
   });
 
   // Aqui, você pode usar isLoading e error para controlar a renderização

@@ -8,15 +8,15 @@ export default function InfantCR() {
       <div className="border rounded">
         <Table>
           <TableHeader>
-          <TableHead className='text-center'>UNID.</TableHead>
-          <TableHead className='text-center'>AG.CLAS</TableHead>
-          <TableHead className='text-center'>F-TRACK</TableHead>
-          <TableHead className='text-center'>F.AMARELAS</TableHead>
-          <TableHead className='text-center'>F.VERDES</TableHead>
-          <TableHead className='text-center'>F.AZUIS</TableHead>
-          <TableHead className='text-center'>TEMP. AMARELAS</TableHead>
-          <TableHead className='text-center'>TEMP. VERDES</TableHead>
-          <TableHead className='text-center'>TEMP. AZUIS</TableHead>
+          <TableHead className='text-xs text-center'>UNID.</TableHead>
+          <TableHead className='text-xs text-center'>AG.CLAS</TableHead>
+          <TableHead className='text-xs text-center'>F-TRACK</TableHead>
+          <TableHead className='text-xs text-center'>F.AMARELAS</TableHead>
+          <TableHead className='text-xs text-center'>F.VERDES</TableHead>
+          <TableHead className='text-xs text-center'>F.AZUIS</TableHead>
+          <TableHead className='text-xs text-center'>TEMP. AMARELAS</TableHead>
+          <TableHead className='text-xs text-center'>TEMP. VERDES</TableHead>
+          <TableHead className='text-xs text-center'>TEMP. AZUIS</TableHead>
           </TableHeader>
           <TableBody className='border-t-2'>
             <TableRow>

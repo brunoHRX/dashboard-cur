@@ -22,7 +22,7 @@ async function fetchSheetData(unit: string): Promise<SheetDataRow[]> {
         resolve(result.data as SheetDataRow[]);
       }
     });
-    console.log(unit)
+    unit
   });
 }
 export default function TableCellComponent({ unit, header }: Props) {
@@ -40,7 +40,8 @@ export default function TableCellComponent({ unit, header }: Props) {
         return 'Dados não encontrados';
       }
       return 'Não encontrado';
-    }
+    },
+    refetchInterval: 60000, // Refetch a cada 60 segundos
   });
 
   // Aqui, você pode usar isLoading e error para controlar a renderização
@@ -48,6 +49,6 @@ export default function TableCellComponent({ unit, header }: Props) {
   if (error instanceof Error) return <TableCell>Erro ao buscar dados</TableCell>;
 
   return (
-    <TableCell className='text-xs'>{data}</TableCell>
+    <TableCell className='flex justify-center text-xs'>{data}</TableCell>
   );
 }

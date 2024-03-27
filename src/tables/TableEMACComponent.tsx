@@ -1,6 +1,9 @@
 import { useQuery } from 'react-query';
 import Papa from 'papaparse';
+import { Button } from '@/components/ui/button';
 import { TableCell } from '@/components/ui/table';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import TableCellComponent from './TableCellComponent';
 
 type SheetDataRow = Record<string, string>;
 
@@ -71,7 +74,7 @@ const fetchAndFormatData = async (censoType: string, unit: string) => {
   });
 };
 
-export default function TableRowComponent({ censoType, unit }: Props) {
+export default function TableEMACComponent({ censoType, unit }: Props) {
   const { data: formattedStamp, isLoading, error } = useQuery(
     ['sheetData', censoType, unit],
     () => fetchAndFormatData(censoType, unit),
@@ -84,13 +87,33 @@ export default function TableRowComponent({ censoType, unit }: Props) {
     // Determina a classe de cor baseado no valor de formattedStamp
     const colorClass = formattedStamp ? determineColorClass(formattedStamp) : ''
     
-  if (isLoading) return <TableCell>Carregando...</TableCell>;
-  if (error) return <TableCell>Erro ao carregar dados</TableCell>;
+  if (isLoading) return <Button>Carregando...</Button>;
+  if (error) return <Button>Erro ao carregar dados</Button>;
 
-  return <TableCell className={`border-r-2 border-l-2 justify-center ${colorClass}`}>
-    <div>
-      {formattedStamp}
-    </div>
-  </TableCell>;
+  return <TableCell className='flex justify-center p-0'>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" className={`rounded-none justify-center w-full ${colorClass}`}>
+                <div>
+                  {formattedStamp}
+                </div>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogTitle>Motivo de Acionamento</DialogTitle>
+              <DialogDescription>
+                <TableCellComponent  unit={unit} header={"bigMotive"} />
+                <div className="flex flex-row items-center justify-center justify-items-center">
+                  <p>Enviado: {formattedStamp}</p>
+                </div>
+                <div className="flex flex-row items-center justify-center justify-items-center">
+                  <p>Responsável:</p>
+                  <TableCellComponent unit={unit} header={"name"} />
+                </div>
+              </DialogDescription>
+            </DialogContent>
+          </Dialog>
+        </TableCell>
 
 }
+

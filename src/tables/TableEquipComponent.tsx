@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
 import Papa from 'papaparse';
+import { TableCell } from '@/components/ui/table';
 
 
 // Define o tipo para os dados de uma linha da sua planilha
@@ -10,6 +11,20 @@ interface Props {
   header: string; // Nova prop para especificar a coluna desejada
 }
 
+
+// Função para determinar a classe de cor baseada na diferença de horas
+function determineColorClass(data: string): string {
+  if (data === 'Não encontrado' || data === 'Data não disponível') {
+    return 'bg-cur-madder'; // Vermelho para quando não for encontrado ou não disponível
+  } else if (data == "0" || data == 'FALSE') {
+    return 'bg-cur-madder'; 
+  } else if (data == "TRUE") {
+    return 'bg-cur-green'; 
+  } else {
+    return '';
+  }
+  
+}
 
 // Função para buscar os dados da planilha e processá-los
 async function fetchSheetData(unit: string): Promise<SheetDataRow[]> {
@@ -25,7 +40,7 @@ async function fetchSheetData(unit: string): Promise<SheetDataRow[]> {
     unit
   });
 }
-export default function TableCellComponent({ unit, header }: Props) {
+export default function TableEquipComponent({ unit, header }: Props) {
   const { data, isLoading, error } = useQuery(['sheetData', unit], () => fetchSheetData(unit), {
     // A função de seleção é usada para filtrar e ordenar os dados após a busca
     select: (data) => {
@@ -45,11 +60,14 @@ export default function TableCellComponent({ unit, header }: Props) {
     refetchOnWindowFocus: true, // Refetch quando a janela ou aba ganha foco novamente
   });
 
+  const colorClass = data ? determineColorClass(data) : ''
   // Aqui, você pode usar isLoading e error para controlar a renderização
-  if (isLoading) return <div>Carregando...</div>;
-  if (error instanceof Error) return <div>Erro ao buscar dados</div>;
+  if (isLoading) return <TableCell>Carregando...</TableCell>;
+  if (error instanceof Error) return <TableCell>Erro ao buscar dados</TableCell>;
 
-  return (
-    <div className='flex justify-center text-xs'>{data}</div>
-  );
+  return <TableCell className={`border-r-2 border-l-2 justify-center ${colorClass}`}>
+      <div>
+        {data}
+      </div>  
+    </TableCell>;
 }

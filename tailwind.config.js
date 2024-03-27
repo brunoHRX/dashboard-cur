@@ -16,7 +16,11 @@ module.exports = {
       'cur-dark-orange': '#CC7A00',
       'cur-grey': '#C8C6C6',
       'cur-offwhite': '#F5F5F5',
-      'cur-dark': '#191717'
+      'cur-dark': '#191717',
+      'cur-yellow': '#FFC53A',
+      'cur-green': '#679436',
+      'cur-blue-ligth': '#216869',
+      'cur-madder': '#A4031F'
     },
     container: {
       center: true,

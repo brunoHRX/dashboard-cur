@@ -20,16 +20,16 @@ export default function App() {
           <EmacTable />
         </div>
         <div className="md:col-span-2">
-          <EquipamentTable />
-        </div>
-        <div className="md:col-span-2">
-          <TeamTable />
-        </div>
-        <div className="md:col-span-2">
           <AdultoCR />
         </div>
         <div className="md:col-span-2">
           <InfantCR />
+        </div>
+        <div className="md:col-span-2">
+          <EquipamentTable />
+        </div>
+        <div className="md:col-span-2">
+          <TeamTable />
         </div>
       </div>
     </ThemeProvider>

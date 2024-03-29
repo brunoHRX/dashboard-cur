@@ -15,7 +15,7 @@ interface Props {
 // Função auxiliar para formatar a data
 function formatStamp(stamp: string) {
   if (!stamp) return 'Data não disponível';
-  const parts = stamp.split(', ');
+  const parts = stamp.split(/,\s*|\s+/);
   const date = parts[0]; // "DD/MM/YYYY"
   const time = parts[1].substring(0, 5); // "HH:MM"
   return `${date.substring(0, 5)} - ${time}`; // "DD/MM - HH:MM"
@@ -38,7 +38,6 @@ function determineColorClass(formattedStamp: string): string {
   const stampDateTime = formatStampToDateTime(formattedStamp);
   const now = new Date();
   const diffHours = (now.getTime() - stampDateTime.getTime()) / (1000 * 60 * 60); // Diferença em horas
-  console.log(diffHours)
   if (diffHours < 1) {
     return 'bg-cur-green'; // Verde para menos de 1 hora
   } else if (diffHours < 2) {
@@ -79,8 +78,8 @@ export default function TableEMACComponent({ censoType, unit }: Props) {
     ['sheetData', censoType, unit],
     () => fetchAndFormatData(censoType, unit),
     {
-      staleTime: 1000 * 60 * 5, // Dados ficam frescos por 5 minutos
-      refetchInterval: 1000 * 60 * 2, // Refetch a cada 2 minutos
+      // staleTime: 1000 * 60 * 2, // Dados ficam frescos por 2 minutos
+      refetchInterval: 1000 * 60 * 3, // Refetch a cada 3 minutos
       refetchOnWindowFocus: true, // Refetch quando a janela ou aba ganha foco novamente
     },
     );

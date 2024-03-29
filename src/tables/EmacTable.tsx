@@ -6,14 +6,14 @@ import TableEMACComponent from './TableEMACComponent';
 
 export default function EmacTable() {
   return(
-    <div className='p-2 max-w-4xl w-full'>
+    <div className='p-2 max-w-5xl w-full'>
       <div className='border rounded'>
         <Table className='bg-cur-dark-orange'>
           <TableHeader className='w-full'>
             <TableHead className='text-center text-cur-offwhite border-2'>PAINEL DE SOLICITAÇÕES EMAC</TableHead>
           </TableHeader>
         </Table>
-        <Table className='bg-background '>
+        <Table className='bg-background'>
           <TableHeader className='w-full bg-cur-dark '>
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>UNID.</TableHead>
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>ACIONAMENTO EMAC</TableHead>
@@ -25,7 +25,7 @@ export default function EmacTable() {
             </TableRow>            
             <TableRow>
               <TableCell className='text-center border-r-2 border-l-2'>CEL</TableCell>
-              <TableEMACComponent unit={"UPA ALMEIDA"} censoType={"EMAC"} />
+              <TableEMACComponent unit={"UPA CORONEL"} censoType={"EMAC"} />
             </TableRow>
             <TableRow>
               <TableCell className='text-center border-r-2 border-l-2'>LEB</TableCell>

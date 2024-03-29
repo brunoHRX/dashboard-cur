@@ -41,7 +41,8 @@ export default function TableCellComponent({ unit, header }: Props) {
       }
       return 'Não encontrado';
     },
-    refetchInterval: 60000, // Refetch a cada 60 segundos
+    // staleTime: 1000 * 60 * 2, // Dados ficam frescos por 2 minutos
+    refetchInterval: 1000 * 60 * 3, // Refetch a cada 3 minutos
     refetchOnWindowFocus: true, // Refetch quando a janela ou aba ganha foco novamente
   });
 
@@ -50,6 +51,6 @@ export default function TableCellComponent({ unit, header }: Props) {
   if (error instanceof Error) return <div>Erro ao buscar dados</div>;
 
   return (
-    <div className='flex justify-center text-xs'>{data}</div>
+    <div className='flex justify-center text-xl font-bold'>{data}</div>
   );
 }

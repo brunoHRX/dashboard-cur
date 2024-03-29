@@ -56,7 +56,8 @@ export default function TableEquipComponent({ unit, header }: Props) {
       }
       return 'Não encontrado';
     },
-    refetchInterval: 60000, // Refetch a cada 60 segundos
+    // staleTime: 1000 * 60 * 2, // Dados ficam frescos por 2 minutos
+    refetchInterval: 1000 * 60 * 3, // Refetch a cada 3 minutos
     refetchOnWindowFocus: true, // Refetch quando a janela ou aba ganha foco novamente
   });
 
@@ -65,9 +66,9 @@ export default function TableEquipComponent({ unit, header }: Props) {
   if (isLoading) return <TableCell>Carregando...</TableCell>;
   if (error instanceof Error) return <TableCell>Erro ao buscar dados</TableCell>;
 
-  return <TableCell className={`border-r-2 border-l-2 justify-center ${colorClass}`}>
+  return <TableCell className={`border-r-2 border-l-2 text-xl font-bold justify-center ${colorClass}`}>
       <div>
-        {data}
+        {data == "TRUE" ? "ATIVO" : (data == "FALSE" ? "INATIVO": data) }
       </div>  
     </TableCell>;
 }

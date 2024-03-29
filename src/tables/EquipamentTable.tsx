@@ -12,7 +12,7 @@ export default function EquipamentTable() {
           </TableHeader>
         </Table>
         <Table className='bg-background'>
-          <TableHeader className=' w-full bg-cur-dark'>
+          <TableHeader className='w-full bg-cur-dark'>
           <TableHead className='text-center  text-cur-offwhite border-r-2 border-l-2'>UNID.</TableHead>
           <TableHead className='text-center  text-cur-offwhite border-r-2 border-l-2'>MONITOR</TableHead>
           <TableHead className='text-center  text-cur-offwhite border-r-2 border-l-2'>OXÍMETRO</TableHead>

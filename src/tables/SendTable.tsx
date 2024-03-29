@@ -21,8 +21,8 @@ export default function SendTable() {
             <TableHead className='text-center  text-cur-offwhite border-r-2 border-l-2'>UNID.</TableHead>
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>GERAL</TableHead>
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>C.R.</TableHead>
-            <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>MED.</TableHead>
-            <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>EQUIP.</TableHead>
+            <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>MÉDICOS</TableHead>
+            <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>EQUIPAMENTOS</TableHead>
           </TableHeader>
           <TableBody className='border-t-2 text-center'>
             <TableRow>
@@ -34,10 +34,10 @@ export default function SendTable() {
             </TableRow>
             <TableRow>
               <TableCell className='text-center'>CEL</TableCell>
-                <TableRowComponent unit={"UPA CORONEL"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"UPA CORONEL"} censoType={"Classification"} />
-                <TableRowComponent unit={"UPA CORONEL"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"UPA CORONEL"} censoType={"EquipmentForm"} />
+              <TableRowComponent unit={"UPA CORONEL"} censoType={"GeneralForm"} />
+              <TableRowComponent unit={"UPA CORONEL"} censoType={"Classification"} />
+              <TableRowComponent unit={"UPA CORONEL"} censoType={"TeamForm"} />
+              <TableRowComponent unit={"UPA CORONEL"} censoType={"EquipmentForm"} />
             </TableRow>
             <TableRow>
               <TableCell className='text-center'>LEB</TableCell>

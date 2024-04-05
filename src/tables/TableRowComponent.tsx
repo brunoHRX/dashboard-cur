@@ -49,7 +49,7 @@ function determineColorClass(formattedStamp: string): string {
 
 // Função para buscar e processar os dados
 const fetchAndFormatData = async (censoType: string, unit: string) => {
-  const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQJ14r-9oGOc-akCnEUymf0kEUOFeCL4SCAK_6wYE76nrielo1mZ8BT2woUCtsT3bq2fEI_nIdZbnAQ/pub?gid=0&single=true&output=csv');
+  const response = await fetch(''INSIRA A URL DA PLANILHA OU BANCO PARA EFETIVAR AS REQUISIÇÕES AQUI'');
   const text = await response.text();
   return new Promise<string>((resolve) => {
     Papa.parse(text, {

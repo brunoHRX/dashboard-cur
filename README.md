@@ -109,5 +109,3 @@ Sua contribuição pode fazer uma grande diferença! Se você tem ideias para no
 Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ---
-
-Espero que este modelo ajude a destacar seu projeto de uma forma que atraia atenção, colaboração e reconhecimento. Sinta-se à vontade para personalizar o conteúdo para atender às necessidades específicas do seu projeto e da sua comunidade.

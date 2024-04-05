@@ -51,7 +51,6 @@ npm run dev
 
 Abra [http://localhost:3000](http://localhost:3000) para visualizar o dashboard em ação.
 
-Adicionar instruções claras e específicas no README para orientar os colaboradores ou usuários a fazerem alterações em arquivos cruciais pode ser muito útil, especialmente quando se trata de personalizar a aplicação para atender às necessidades individuais. Vamos incluir uma seção no README que explica como e onde fazer essas alterações nos arquivos relevantes.
 
 ---
 
@@ -98,7 +97,6 @@ Certifique-se de que a URL da fonte de dados seja segura e de que você tem as d
 
 ---
 
-Incluindo essas instruções, você facilita para que outros desenvolvedores façam as alterações necessárias para integrar o dashboard com diferentes fontes de dados, personalizando a aplicação conforme necessário.
 
 ## Contribuindo 🤝
 

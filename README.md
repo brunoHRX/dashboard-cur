@@ -1,6 +1,3 @@
-Criar um README convidativo é uma ótima maneira de destacar o seu projeto e atrair mais usuários e contribuidores. Para o projeto **Dashboard CUR**, que complementa o **Censo CUR**, vamos estruturar um README que não apenas informa, mas também entusiasma quem o lê:
-
----
 
 # Dashboard CUR 📊
 

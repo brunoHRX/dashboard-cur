@@ -1,18 +1,19 @@
 import { ThemeProvider } from './components/ThemeProvider';
-import AdultoCR from './tables/AdultTable';
+
+import Header from './components/Header';
+import AdultTable from './tables/AdultTable';
 import EmacTable from './tables/EmacTable';
 import EquipamentTable from './tables/EquipamentTable';
-import InfantCR from './tables/InfantTable';
+import InfantTable from './tables/InfantTable';
 import SendTable from './tables/SendTable';
 import TeamTable from './tables/TeamTable';
-import Header from './components/Header';
 
 export default function App() {
   return (
     <>
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
       <Header />
-      <div className="bg-cur-dark-blue grid grid-cols-1 pt-2 sm:grid-cols-2 md:grid-cols-4 gap-0.5">
+      <div className="bg-cur-most-dark grid grid-cols-1 pt-2 sm:grid-cols-2 md:grid-cols-4 gap-0.5">
         <div className="md:col-span-2">
           <SendTable />
         </div>
@@ -20,10 +21,10 @@ export default function App() {
           <EmacTable />
         </div>
         <div className="md:col-span-2">
-          <AdultoCR />
+          <AdultTable />
         </div>
         <div className="md:col-span-2">
-          <InfantCR />
+          <InfantTable />
         </div>
         <div className="md:col-span-2">
           <EquipamentTable />

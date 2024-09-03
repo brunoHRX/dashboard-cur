@@ -1,12 +1,110 @@
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import TableEquipComponent from './TableEquipComponent';
 
 
-export default function EquipamentTable() {
+interface UnidadeData {
+  unidade: string;
+  monitores: string;
+  oximetros: string;
+  desfibriladores: string;
+  ecgs: string;
+  telecardios: string;
+  monitores_fetais: string;
+  raio_x: boolean;
+  auto_clave: boolean;
+}
+
+const EquipmentTable: React.FC = () => {
+  const [data, setData] = useState<UnidadeData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    const { data: unidadeData, error } = await supabase
+      .from('equipment')
+      .select('*');
+
+    if (error) {
+      console.error('Error fetching data:', error);
+    } else {
+      setData(unidadeData as UnidadeData[]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+
+    const channel = supabase.channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'bd_censo_cur' },
+        (payload) => {
+          console.log('Change received!', payload);
+          fetchData(); // Fetch the data again to update the state
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const filterName = (unidade: string) => {
+    switch (unidade) {
+      case 'CRS AERO' :
+        return 'AER';
+        break;
+      case 'CRS COOPHAVILA' :
+        return 'COP';
+        break;
+      case 'CRS NOVA' :
+        return 'NBA';
+        break;
+      case 'CRS TIRADENTES' :
+        return 'TIR';
+        break;
+      case 'UPA ALMEIDA' :
+        return 'ALM';
+        break;
+      case 'UPA CORONEL' :
+        return 'CEL';
+        break;
+      case 'UPA LEBLON' :
+        return 'LEB';
+        break;
+      case 'UPA MORENINHAS' :
+        return 'MOR';
+        break;
+      case 'UPA SANTA' :
+        return 'SMO';
+        break;
+      case 'UPA UNIVERSITARIO' :
+        return 'UNI';
+        break;
+    }
+  }
+
+  const setColor = (state: boolean) => {
+
+
+    if (state == true) {
+      return 'bg-cur-green';
+    } else {
+      return 'bg-cur-madder';
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="p-2 max-w-5xl w-full">
       <div className="border rounded">
-        <Table className='bg-cur-dark-orange'>
+      <Table className='bg-cur-dark-orange'>
           <TableHeader className='w-full'>
             <TableHead className='text-center text-cur-offwhite border-2'>PAINEL DE EQUIPAMENTOS</TableHead>
           </TableHeader>
@@ -24,119 +122,40 @@ export default function EquipamentTable() {
           <TableHead className='text-center  text-cur-offwhite border-r-2 border-l-2'>A. CLAVE</TableHead>
           </TableHeader>
           <TableBody className='border-t-2 text-center'>
-            <TableRow>
-              <TableCell className='text-center'>ALM</TableCell>
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"monitors"} />
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"oximeters"} />
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"defibrillators"} />
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"ecgs"} />
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"telecardios"} />
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"fetalMonitors"} />
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"hasXRay"} />
-              <TableEquipComponent unit={"UPA ALMEIDA"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>CEL</TableCell>
-              <TableEquipComponent unit={"UPA CORONEL"} header={"monitors"} />
-              <TableEquipComponent unit={"UPA CORONEL"} header={"oximeters"} />
-              <TableEquipComponent unit={"UPA CORONEL"} header={"defibrillators"} />
-              <TableEquipComponent unit={"UPA CORONEL"} header={"ecgs"} />
-              <TableEquipComponent unit={"UPA CORONEL"} header={"telecardios"} />
-              <TableEquipComponent unit={"UPA CORONEL"} header={"fetalMonitors"} />
-              <TableEquipComponent unit={"UPA CORONEL"} header={"hasXRay"} />
-              <TableEquipComponent unit={"UPA CORONEL"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>LEB</TableCell>
-                <TableEquipComponent unit={"UPA LEBLON"} header={"monitors"} />
-                <TableEquipComponent unit={"UPA LEBLON"} header={"oximeters"} />
-                <TableEquipComponent unit={"UPA LEBLON"} header={"defibrillators"} />
-                <TableEquipComponent unit={"UPA LEBLON"} header={"ecgs"} />
-                <TableEquipComponent unit={"UPA LEBLON"} header={"telecardios"} />
-                <TableEquipComponent unit={"UPA LEBLON"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"UPA LEBLON"} header={"hasXRay"} />
-                <TableEquipComponent unit={"UPA LEBLON"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>MOR</TableCell>
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"monitors"} />
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"oximeters"} />
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"defibrillators"} />
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"ecgs"} />
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"telecardios"} />
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"hasXRay"} />
-                <TableEquipComponent unit={"UPA MORENINHAS"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>UNI</TableCell>
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"monitors"} />
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"oximeters"} />
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"defibrillators"} />
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"ecgs"} />
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"telecardios"} />
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"hasXRay"} />
-                <TableEquipComponent unit={"UPA UNIVERSITARIO"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>SMO</TableCell>
-                <TableEquipComponent unit={"UPA SANTA"} header={"monitors"} />
-                <TableEquipComponent unit={"UPA SANTA"} header={"oximeters"} />
-                <TableEquipComponent unit={"UPA SANTA"} header={"defibrillators"} />
-                <TableEquipComponent unit={"UPA SANTA"} header={"ecgs"} />
-                <TableEquipComponent unit={"UPA SANTA"} header={"telecardios"} />
-                <TableEquipComponent unit={"UPA SANTA"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"UPA SANTA"} header={"hasXRay"} />
-                <TableEquipComponent unit={"UPA SANTA"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>COP</TableCell>
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"monitors"} />
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"oximeters"} />
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"defibrillators"} />
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"ecgs"} />
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"telecardios"} />
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"hasXRay"} />
-                <TableEquipComponent unit={"CRS COOPHAVILA"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>NBA</TableCell>
-                <TableEquipComponent unit={"CRS NOVA"} header={"monitors"} />
-                <TableEquipComponent unit={"CRS NOVA"} header={"oximeters"} />
-                <TableEquipComponent unit={"CRS NOVA"} header={"defibrillators"} />
-                <TableEquipComponent unit={"CRS NOVA"} header={"ecgs"} />
-                <TableEquipComponent unit={"CRS NOVA"} header={"telecardios"} />
-                <TableEquipComponent unit={"CRS NOVA"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"CRS NOVA"} header={"hasXRay"} />
-                <TableEquipComponent unit={"CRS NOVA"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>AER</TableCell>
-                <TableEquipComponent unit={"CRS AERO"} header={"monitors"} />
-                <TableEquipComponent unit={"CRS AERO"} header={"oximeters"} />
-                <TableEquipComponent unit={"CRS AERO"} header={"defibrillators"} />
-                <TableEquipComponent unit={"CRS AERO"} header={"ecgs"} />
-                <TableEquipComponent unit={"CRS AERO"} header={"telecardios"} />
-                <TableEquipComponent unit={"CRS AERO"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"CRS AERO"} header={"hasXRay"} />
-                <TableEquipComponent unit={"CRS AERO"} header={"hasAutoclave"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>TIR</TableCell>
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"monitors"} />
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"oximeters"} />
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"defibrillators"} />
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"ecgs"} />
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"telecardios"} />
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"fetalMonitors"} />
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"hasXRay"} />
-                <TableEquipComponent unit={"CRS TIRADENTES"} header={"hasAutoclave"} />
-            </TableRow>
+            {data.map((unidade, index) => (
+              <TableRow key={index} className="border-t">
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center  bg-cur-dark'>{unidade.unidade ? filterName(unidade.unidade) : unidade.unidade}</TableCell>
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>
+                  {unidade.monitores}
+                </TableCell>
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>
+                  {unidade.oximetros}
+                </TableCell>
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>
+                  {unidade.desfibriladores}
+                </TableCell>
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>
+                  {unidade.ecgs}
+                </TableCell>
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>
+                  {unidade.telecardios}
+                </TableCell>
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>
+                  {unidade.monitores_fetais}
+                </TableCell>
+                <TableCell className={`border-r-2 border-l-2 font-bold justify-center ${setColor(unidade.raio_x)}`}>
+                  {unidade.raio_x ? 'ATIVO' : 'INATIVO'}
+                </TableCell>
+                <TableCell className={`border-r-2 border-l-2 font-bold justify-center ${setColor(unidade.auto_clave)}`}>
+                  {unidade.auto_clave ? 'ATIVO' : 'INATIVO'}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
     </div>
   );
 }
+
+export default EquipmentTable;

@@ -22,7 +22,8 @@ module.exports = {
       'cur-dark-yellow': '#B88100',
       'cur-green': '#679436',
       'cur-dark-green': '#1F2D10',
-      'cur-madder': '#A4031F'
+      'cur-madder': '#A4031F',
+      'cur-most-dark': '#000000'
     },
     container: {
       center: true,

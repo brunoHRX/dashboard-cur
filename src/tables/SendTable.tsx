@@ -1,12 +1,98 @@
-
-
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-import TableRowComponent from './TableRowComponent';
+interface UnidadeData {
+  unidade: string;
+  ultimo_envio_geral: string;
+  ultimo_envio_fichas: string;
+  ultimo_envio_equipe: string;
+  ultimo_envio_equipamento: string;
+}
 
+const UnidadeTable: React.FC = () => {
+  const [data, setData] = useState<UnidadeData[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  const fetchData = async () => {
+    console.log('Fetching data...');
+    const { data: unidadeData, error } = await supabase
+      .from('ultimo_envio_por_unidade')
+      .select('*');
 
-export default function SendTable() {
+    if (error) {
+      console.error('Error fetching data:', error);
+    } else {
+      console.log('Data fetched:', unidadeData);
+      setData(unidadeData as UnidadeData[]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+
+    const channel = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'bd_censo_cur' },
+        (payload) => {
+          console.log('Change received!', payload);
+          fetchData(); // Fetch the data again to update the state
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const getTimeDifferenceClass = (time: string) => {
+    const currentTime = new Date();
+    const targetTime = new Date(time);
+    const diffInHours = (currentTime.getTime() - targetTime.getTime()) / (1000 * 60 * 60);
+
+    if (diffInHours < 1) {
+      return 'bg-cur-green';
+    } else if (diffInHours < 2) {
+      return 'bg-cur-yellow';
+    } else {
+      return 'bg-cur-madder';
+    }
+  };
+
+  const filterName = (unidade: string) => {
+    const unitNames: { [key: string]: string } = {
+      'CRS AERO': 'AER',
+      'CRS COOPHAVILA': 'COP',
+      'CRS NOVA': 'NBA',
+      'CRS TIRADENTES': 'TIR',
+      'UPA ALMEIDA': 'ALM',
+      'UPA CORONEL': 'CEL',
+      'UPA LEBLON': 'LEB',
+      'UPA MORENINHAS': 'MOR',
+      'UPA SANTA': 'SMO',
+      'UPA UNIVERSITARIO': 'UNI',
+    };
+    return unitNames[unidade] || unidade;
+  };
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}/${month} - ${hours}:${minutes}`;
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='p-2 max-w-5xl w-full'>
@@ -24,77 +110,24 @@ export default function SendTable() {
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>MÉDICOS</TableHead>
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>EQUIPAMENTOS</TableHead>
           </TableHeader>
-          <TableBody className='border-t-2 text-center'>
-            <TableRow>
-              <TableCell>ALM</TableCell>
-              <TableRowComponent unit={"UPA ALMEIDA"} censoType={"GeneralForm"} />
-              <TableRowComponent unit={"UPA ALMEIDA"} censoType={"Classification"} />
-              <TableRowComponent unit={"UPA ALMEIDA"} censoType={"TeamForm"} />
-              <TableRowComponent unit={"UPA ALMEIDA"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>CEL</TableCell>
-              <TableRowComponent unit={"UPA CORONEL"} censoType={"GeneralForm"} />
-              <TableRowComponent unit={"UPA CORONEL"} censoType={"Classification"} />
-              <TableRowComponent unit={"UPA CORONEL"} censoType={"TeamForm"} />
-              <TableRowComponent unit={"UPA CORONEL"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>LEB</TableCell>
-                <TableRowComponent unit={"UPA LEBLON"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"UPA LEBLON"} censoType={"Classification"} />
-                <TableRowComponent unit={"UPA LEBLON"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"UPA LEBLON"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>MOR</TableCell>
-                <TableRowComponent unit={"UPA MORENINHAS"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"UPA MORENINHAS"} censoType={"Classification"} />
-                <TableRowComponent unit={"UPA MORENINHAS"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"UPA MORENINHAS"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>UNI</TableCell>
-                <TableRowComponent unit={"UPA UNIVERSITARIO"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"UPA UNIVERSITARIO"} censoType={"Classification"} />
-                <TableRowComponent unit={"UPA UNIVERSITARIO"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"UPA UNIVERSITARIO"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>SMO</TableCell>
-                <TableRowComponent unit={"UPA SANTA"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"UPA SANTA"} censoType={"Classification"} />
-                <TableRowComponent unit={"UPA SANTA"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"UPA SANTA"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>COP</TableCell>
-                <TableRowComponent unit={"CRS COOPHAVILA"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"CRS COOPHAVILA"} censoType={"Classification"} />
-                <TableRowComponent unit={"CRS COOPHAVILA"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"CRS COOPHAVILA"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>NBA</TableCell>
-                <TableRowComponent unit={"CRS NOVA"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"CRS NOVA"} censoType={"Classification"} />
-                <TableRowComponent unit={"CRS NOVA"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"CRS NOVA"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>AER</TableCell>
-                <TableRowComponent unit={"CRS AERO"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"CRS AERO"} censoType={"Classification"} />
-                <TableRowComponent unit={"CRS AERO"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"CRS AERO"} censoType={"EquipmentForm"} />
-            </TableRow>
-            <TableRow>
-              <TableCell className='text-center'>TIR</TableCell>
-                <TableRowComponent unit={"CRS TIRADENTES"} censoType={"GeneralForm"} />
-                <TableRowComponent unit={"CRS TIRADENTES"} censoType={"Classification"} />
-                <TableRowComponent unit={"CRS TIRADENTES"} censoType={"TeamForm"} />
-                <TableRowComponent unit={"CRS TIRADENTES"} censoType={"EquipmentForm"} />
-            </TableRow>
+          <TableBody className='p-0 border-t-2 text-center'>
+            {data.map((unidade, index) => (
+              <TableRow key={index} className="p-0 border-t">
+                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>{filterName(unidade.unidade)}</TableCell>
+                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_geral)}`}>
+                  {unidade.ultimo_envio_geral ? formatDate(unidade.ultimo_envio_geral) : 'N/A'}
+                </TableCell>
+                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_fichas)}`}>
+                  {unidade.ultimo_envio_fichas ? formatDate(unidade.ultimo_envio_fichas) : 'N/A'}
+                </TableCell>
+                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_equipe)}`}>
+                  {unidade.ultimo_envio_equipe ? formatDate(unidade.ultimo_envio_equipe) : 'N/A'}
+                </TableCell>
+                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_equipamento)}`}>
+                  {unidade.ultimo_envio_equipamento ? formatDate(unidade.ultimo_envio_equipamento) : 'N/A'}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
@@ -102,4 +135,4 @@ export default function SendTable() {
   );
 };
 
-
+export default UnidadeTable;

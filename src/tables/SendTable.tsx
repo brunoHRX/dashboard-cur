@@ -112,18 +112,18 @@ const UnidadeTable: React.FC = () => {
           </TableHeader>
           <TableBody className='p-0.5 border-t-2 text-center'>
             {data.map((unidade, index) => (
-              <TableRow key={index} className="py-2 border-t">
-                <TableCell className='border-r-2 border-l-2 font-bold justify-center'>{filterName(unidade.unidade)}</TableCell>
-                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_geral)}`}>
+              <TableRow key={index} className="border-t">
+                <TableCell className='py-2.5 border-r-2 border-l-2 font-bold justify-center'>{filterName(unidade.unidade)}</TableCell>
+                <TableCell className={` border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_geral)}`}>
                   {unidade.ultimo_envio_geral ? formatDate(unidade.ultimo_envio_geral) : 'N/A'}
                 </TableCell>
-                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_fichas)}`}>
+                <TableCell className={` border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_fichas)}`}>
                   {unidade.ultimo_envio_fichas ? formatDate(unidade.ultimo_envio_fichas) : 'N/A'}
                 </TableCell>
-                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_equipe)}`}>
+                <TableCell className={` border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_equipe)}`}>
                   {unidade.ultimo_envio_equipe ? formatDate(unidade.ultimo_envio_equipe) : 'N/A'}
                 </TableCell>
-                <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_equipamento)}`}>
+                <TableCell className={` border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_equipamento)}`}>
                   {unidade.ultimo_envio_equipamento ? formatDate(unidade.ultimo_envio_equipamento) : 'N/A'}
                 </TableCell>
               </TableRow>

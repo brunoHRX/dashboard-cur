@@ -130,7 +130,7 @@ const EmacTable: React.FC = () => {
           <TableBody className='p-0 border-t-2 text-center'>
             {data.map((unidade, index) => (
               <TableRow key={index} className="p-0 border-t">
-                <TableCell className='border-r-2 border-l-2 font-bold justify-center  bg-cur-dark'>{unidade.unidade ? filterName(unidade.unidade) : unidade.unidade}</TableCell>
+                <TableCell className='p-0 border-r-2 border-l-2 font-bold justify-center  bg-cur-dark'>{unidade.unidade ? filterName(unidade.unidade) : unidade.unidade}</TableCell>
                 <TableCell className={`p-0.5 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.created_at)}`}>
                 <Dialog>
                   <DialogTrigger asChild>

@@ -13,7 +13,7 @@ export default function App() {
     <>
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
       <Header />
-      <div className="bg-cur-most-dark grid grid-cols-1 pt-2 sm:grid-cols-2 md:grid-cols-4 gap-0.5">
+      <div className="bg-cur-most-dark grid grid-cols-2 pt-2 sm:grid-cols-2 md:grid-cols-4 gap-0.5">
         <div className="md:col-span-2">
           <SendTable />
         </div>

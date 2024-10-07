@@ -110,9 +110,9 @@ const UnidadeTable: React.FC = () => {
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>MÉDICOS</TableHead>
             <TableHead className='text-center text-cur-offwhite border-r-2 border-l-2'>EQUIPAMENTOS</TableHead>
           </TableHeader>
-          <TableBody className='p-0 border-t-2 text-center'>
+          <TableBody className='p-0.5 border-t-2 text-center'>
             {data.map((unidade, index) => (
-              <TableRow key={index} className="p-0 border-t">
+              <TableRow key={index} className="py-2 border-t">
                 <TableCell className='border-r-2 border-l-2 font-bold justify-center'>{filterName(unidade.unidade)}</TableCell>
                 <TableCell className={`p-0 border-r-2 border-l-2 font-bold justify-center ${getTimeDifferenceClass(unidade.ultimo_envio_geral)}`}>
                   {unidade.ultimo_envio_geral ? formatDate(unidade.ultimo_envio_geral) : 'N/A'}
